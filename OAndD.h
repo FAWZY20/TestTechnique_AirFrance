@@ -5,6 +5,8 @@
 #include <set>
 #include <vector>
 #include <sstream>
+#include <map>
+#include <algorithm>
 
 class OAndD
 {
@@ -21,7 +23,7 @@ public:
         this->tarifs = tarifs;
     }
 
-    std::string getOrigine()
+    std::string getOrigine() const
     {
         return origine;
     }
@@ -31,7 +33,7 @@ public:
         origine = newOrigine;
     }
 
-    std::string getDestination()
+    std::string getDestination() const
     {
         return destination;
     }
@@ -41,7 +43,7 @@ public:
         destination = newDestination;
     }
 
-    std::set<long> getTarifs()
+    std::set<long> getTarifs() const
     {
         return tarifs;
     }
@@ -64,7 +66,7 @@ public:
 
 long tarifMin(const std::set<long> &tarifs)
 {
-    long min = 0;
+    long min = *tarifs.begin();
     for (long tarif : tarifs)
     {
         if (tarif < min)
@@ -77,7 +79,8 @@ long tarifMin(const std::set<long> &tarifs)
 
 long tarifMax(const std::set<long> &tarifs)
 {
-    long max = 0;
+    long max = *tarifs.begin();
+
     for (long tarif : tarifs)
     {
         if (max < tarif)
@@ -90,7 +93,7 @@ long tarifMax(const std::set<long> &tarifs)
 
 long tarifMoy(std::set<long> tarifs)
 {
-    long total = 0;
+    long total = *tarifs.begin();
     for (long tarif : tarifs)
     {
         total += tarif;
@@ -119,6 +122,11 @@ std::vector<OAndD> lireCSVetConstruireOD(std::string cheminFichier)
         std::string destination;
         std::string tarifStr;
 
+        if (ligne.find("Tarif") != std::string::npos)
+        {
+            continue; // Passe à la ligne suivante
+        }
+
         if (std::getline(ss, origine, ';') &&
             std::getline(ss, destination, ';') &&
             std::getline(ss, tarifStr, ';'))
@@ -144,3 +152,24 @@ std::vector<OAndD> lireCSVetConstruireOD(std::string cheminFichier)
 
     return donnees;
 }
+
+void exportCsv(std::vector<OAndD> &data, const std::string origine, const std::string destination)
+{
+
+    std::ofstream monFichier(origine + "&" + destination + ".csv");
+
+    monFichier << "Origine;Destination;TarifMinimum;TarifMaximum;TarifMoyen" << std::endl;
+    std::set<long> listTarif;
+
+    for (OAndD ob : data)
+    {
+        if (ob.getOrigine() == origine && ob.getDestination() == destination)
+        {
+            long tarif = *ob.getTarifs().begin();
+            listTarif.insert(tarif);
+        }
+    }
+
+    monFichier << origine << ";" << destination << ";" << tarifMin(listTarif) << ";" << tarifMax(listTarif) << ";" << tarifMoy(listTarif) << std::endl;
+
+} 
