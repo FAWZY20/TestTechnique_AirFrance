@@ -64,6 +64,22 @@ public:
     }
 };
 
+std::set<long> listTarif(std::vector<OAndD> data, std::string origine, std::string destination)
+{
+    std::set<long> listTarif;
+
+    for (OAndD ob : data)
+    {
+        if (ob.getOrigine() == origine && ob.getDestination() == destination)
+        {
+            long tarif = *ob.getTarifs().begin();
+            listTarif.insert(tarif);
+        }
+    }
+
+    return listTarif;
+}
+
 long tarifMin(const std::set<long> &tarifs)
 {
     long min = *tarifs.begin();
@@ -157,19 +173,20 @@ void exportCsv(std::vector<OAndD> &data, const std::string origine, const std::s
 {
 
     std::ofstream monFichier(origine + "&" + destination + ".csv");
-
     monFichier << "Origine;Destination;TarifMinimum;TarifMaximum;TarifMoyen" << std::endl;
-    std::set<long> listTarif;
+    std::set<long> lTarif = listTarif(data, origine, destination);
+    monFichier << origine << ";" << destination << ";" << tarifMin(lTarif) << ";" << tarifMax(lTarif) << ";" << tarifMoy(lTarif) << std::endl;
+}
 
-    for (OAndD ob : data)
+void exportCsvAllTarif(std::vector<OAndD> &data)
+{
+    std::ofstream fichier("nomFichier.csv");
+    fichier << "Origine;Destination;Tarif;TarifMinimum;TarifMaximum;TarifMoyen" << std::endl;
+
+    for (OAndD od : data)
     {
-        if (ob.getOrigine() == origine && ob.getDestination() == destination)
-        {
-            long tarif = *ob.getTarifs().begin();
-            listTarif.insert(tarif);
-        }
+        std::set<long> lTarif = listTarif(data, od.getOrigine(), od.getDestination());
+        fichier << od.getOrigine() << ";" << od.getDestination() << ";" << *od.getTarifs().begin() << ";" << tarifMin(lTarif) << ";" << tarifMax(lTarif) << ";" << tarifMoy(lTarif) << std::endl;
     }
 
-    monFichier << origine << ";" << destination << ";" << tarifMin(listTarif) << ";" << tarifMax(listTarif) << ";" << tarifMoy(listTarif) << std::endl;
-
-} 
+}

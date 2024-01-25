@@ -7,8 +7,7 @@ private:
     OAndD od;
 
 public:
-
-    FlightNbr(char numVol, OAndD& od): numVol(numVol), od(od) {}
+    FlightNbr(char numVol, OAndD &od) : numVol(numVol), od(od) {}
 
     char getNumVol() const
     {
@@ -30,3 +29,7 @@ public:
         od = newOD;
     }
 };
+
+void exportCsvFlightNbr(FlightNbr FlightNbr)
+{
+}
