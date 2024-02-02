@@ -1,7 +1,7 @@
 
 #include <vector>
-#include "OAndD.h"
-#include "FlightNbr.h"
+#include "src/OAndD.h"
+#include "src/FlightNbr.h"
 
 int main()
 {
