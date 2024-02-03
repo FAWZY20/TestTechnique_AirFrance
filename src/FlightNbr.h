@@ -32,7 +32,7 @@ public:
 
 void exportCsvFlightNbr(FlightNbr flightNbr)
 {
-    std::ofstream fichier("../data/nomFichier.csv");
+    std::ofstream fichier("data/nomFichier.csv");
     fichier << "NuméroDeVol;Origine;Destination;Tarif;TarifMinimum;TarifMaximum;TarifMoyen" << std::endl;
     fichier << flightNbr.getNumVol() << ";" << flightNbr.getOD().getOrigine() << ";" << flightNbr.getOD().getDestination() << ";" << *flightNbr.getOD().getTarifs().begin() << std::endl;
 }
