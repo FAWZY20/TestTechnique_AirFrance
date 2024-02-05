@@ -1,20 +1,21 @@
 #include "OAndD.h"
+using namespace std;
 
 class FlightNbr
 {
 private:
-    std::string numVol;
+    string numVol;
     OAndD od;
 
 public:
-    FlightNbr(std::string numVol, OAndD &od) : numVol(numVol), od(od) {}
+    FlightNbr(string numVol, OAndD &od) : numVol(numVol), od(od) {}
 
-    std::string getNumVol() const
+    string getNumVol() const
     {
         return numVol;
     }
 
-    void setNumVol(std::string newNumVol)
+    void setNumVol(string newNumVol)
     {
         numVol = newNumVol;
     }
@@ -32,7 +33,7 @@ public:
 
 void exportCsvFlightNbr(FlightNbr flightNbr)
 {
-    std::ofstream fichier("data/nomFichier.csv");
-    fichier << "NuméroDeVol;Origine;Destination;Tarif;TarifMinimum;TarifMaximum;TarifMoyen" << std::endl;
-    fichier << flightNbr.getNumVol() << ";" << flightNbr.getOD().getOrigine() << ";" << flightNbr.getOD().getDestination() << ";" << *flightNbr.getOD().getTarifs().begin() << std::endl;
+    ofstream fichier("data/" + flightNbr.getNumVol() + "_" + flightNbr.getOD().getOrigine() + "&" + flightNbr.getOD().getDestination() + ".csv");
+    fichier << "NuméroDeVol;Origine;Destination;Tarif;TarifMinimum;TarifMaximum;TarifMoyen" << endl;
+    fichier << flightNbr.getNumVol() << ";" << flightNbr.getOD().getOrigine() << ";" << flightNbr.getOD().getDestination() << ";" << *flightNbr.getOD().getTarifs().begin() << endl;
 }
