@@ -4,18 +4,18 @@ using namespace std;
 class FlightNbr
 {
 private:
-    string numVol;
+    char* numVol;
     OAndD od;
 
 public:
-    FlightNbr(string numVol, OAndD &od) : numVol(numVol), od(od) {}
+    FlightNbr(char* numVol, OAndD &od) : numVol(numVol), od(od) {}
 
-    string getNumVol() const
+    char* getNumVol() const
     {
         return numVol;
     }
 
-    void setNumVol(string newNumVol)
+    void setNumVol(char* newNumVol)
     {
         numVol = newNumVol;
     }
@@ -33,7 +33,7 @@ public:
 
 void exportCsvFlightNbr(FlightNbr flightNbr)
 {
-    ofstream fichier("data/" + flightNbr.getNumVol() + "_" + flightNbr.getOD().getOrigine() + "&" + flightNbr.getOD().getDestination() + ".csv");
+    ofstream fichier("data/" + string(flightNbr.getNumVol()) + "_" + flightNbr.getOD().getOrigine() + "&" + flightNbr.getOD().getDestination() + ".csv");
     fichier << "NuméroDeVol;Origine;Destination;Tarif;TarifMinimum;TarifMaximum;TarifMoyen" << endl;
     fichier << flightNbr.getNumVol() << ";" << flightNbr.getOD().getOrigine() << ";" << flightNbr.getOD().getDestination() << ";" << *flightNbr.getOD().getTarifs().begin() << endl;
 }
